@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f4eee5">
+  <title>My Money Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">m</span><span>my money<span class="brand-light">journal</span></span></a>
+      <div class="side-label">MENU</div>
+      <a class="side-link active" href="#dashboard"><span>◫</span> Dashboard</a>
+      <a class="side-link" href="#transactions"><span>↕</span> Transaksi</a>
+      <div class="sidebar-note">
+        <span class="note-star">✦</span>
+        <p>Small steps today,<br><strong>brighter tomorrow.</strong></p>
+        <small>Catat dengan bijak ♡</small>
+      </div>
+      <div class="side-footer">PERSONAL FINANCE · 2026</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">PERSONAL FINANCE TRACKER</div>
+          <h1>My Money Journal <span class="sparkle">✦</span></h1>
+          <p class="subtitle">Kelola uangmu, satu langkah kecil setiap hari.</p>
+        </div>
+        <div class="today-pill"><span class="today-dot"></span><span id="todayText">Hari ini</span></div>
+      </header>
+
+      <section id="dashboard">
+        <div class="section-heading">
+          <div><span class="eyebrow">OVERVIEW</span><h2>Ringkasan keuangan</h2></div>
+          <label class="month-picker">Bulan
+            <input type="month" id="monthFilter">
+          </label>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-card balance-card">
+            <div class="card-top"><span>Total saldo</span><span class="card-icon">◈</span></div>
+            <div class="amount" id="balanceValue">Rp0</div>
+            <div class="card-caption">Uang masuk dikurangi uang keluar</div>
+            <div class="balance-decoration">✦</div>
+          </article>
+          <article class="summary-card">
+            <div class="card-top"><span>Uang masuk</span><span class="mini-icon income-icon">↗</span></div>
+            <div class="amount" id="incomeValue">Rp0</div>
+            <div class="card-caption"><span class="status-dot green"></span> Pemasukan bulan ini</div>
+          </article>
+          <article class="summary-card">
+            <div class="card-top"><span>Uang keluar</span><span class="mini-icon expense-icon">↘</span></div>
+            <div class="amount" id="expenseValue">Rp0</div>
+            <div class="card-caption"><span class="status-dot brown"></span> Pengeluaran bulan ini</div>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel">
+            <div class="panel-heading"><div><span class="eyebrow">YOUR ACTIVITY</span><h3>Arus keuangan</h3></div><span class="chart-legend"><i class="legend-income"></i> Masuk <i class="legend-expense"></i> Keluar</span></div>
+            <div class="chart-area" id="chartArea"><div class="empty-chart">Belum ada transaksi pada bulan ini.</div></div>
+            <div class="chart-foot"><span>Ringkasan berdasarkan bulan yang dipilih</span><span id="chartMonth"></span></div>
+          </section>
+
+          <section class="panel quick-panel">
+            <div class="panel-heading"><div><span class="eyebrow">QUICK ACTION</span><h3>Catat transaksi</h3></div><span class="quick-flower">✿</span></div>
+            <p class="quick-desc">Jangan lupa catat setiap uang yang masuk dan keluar.</p>
+            <button class="action-button income-button" data-type="income"><span>＋</span> Tambah uang masuk</button>
+            <button class="action-button expense-button" data-type="expense"><span>－</span> Tambah uang keluar</button>
+            <div class="quick-tip">♡ <span>Konsisten mencatat membuat keuangan lebih terarah.</span></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="transactions" class="transactions-section">
+        <div class="section-heading transaction-heading">
+          <div><span class="eyebrow">TRANSACTION HISTORY</span><h2>Riwayat transaksi</h2></div>
+          <button class="export-button" id="exportBtn">⇩ <span>Ekspor CSV</span></button>
+        </div>
+        <div class="table-panel">
+          <div class="table-tools">
+            <div class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Cari transaksi..."></div>
+            <select id="typeFilter" aria-label="Filter jenis transaksi"><option value="all">Semua transaksi</option><option value="income">Uang masuk</option><option value="expense">Uang keluar</option></select>
+          </div>
+          <div class="transaction-list" id="transactionList"></div>
+        </div>
+      </section>
+      <footer class="footer">Made with care <span>♡</span> My Money Journal · Data tersimpan di perangkat ini</footer>
+    </main>
+  </div>
+
+  <dialog id="transactionDialog">
+    <form id="transactionForm" method="dialog">
+      <div class="modal-header"><div><span class="eyebrow" id="modalEyebrow">NEW TRANSACTION</span><h2 id="modalTitle">Tambah transaksi</h2></div><button type="button" class="close-button" id="closeDialog" aria-label="Tutup">×</button></div>
+      <input type="hidden" id="transactionType" value="expense">
+      <label class="field-label">Jenis transaksi</label>
+      <div class="type-switch"><button type="button" class="type-option" data-modal-type="income">↗ Uang masuk</button><button type="button" class="type-option selected" data-modal-type="expense">↘ Uang keluar</button></div>
+      <label class="field-label" for="amountInput">Nominal (Rp)</label>
+      <input class="form-control" id="amountInput" type="number" min="1" step="1" placeholder="Contoh: 50000" required>
+      <label class="field-label" for="descriptionInput">Nama / keterangan</label>
+      <input class="form-control" id="descriptionInput" maxlength="70" placeholder="Contoh: Uang saku, makan siang..." required>
+      <div class="form-row">
+        <div><label class="field-label" for="categoryInput">Kategori</label><select class="form-control" id="categoryInput"></select></div>
+        <div><label class="field-label" for="dateInput">Tanggal</label><input class="form-control" id="dateInput" type="date" required></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="cancel-button" id="cancelDialog">Batal</button><button type="submit" class="save-button">Simpan transaksi <span>→</span></button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
